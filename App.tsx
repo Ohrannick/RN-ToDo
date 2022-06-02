@@ -29,7 +29,6 @@ const App = () => {
   return (
     <View>
       <StatusBar />
-      <Text>Hello!!</Text>
       <TodoList />
     </View>
   );
