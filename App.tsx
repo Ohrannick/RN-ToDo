@@ -3,34 +3,30 @@
  */
 
 import React from 'react';
-import TodoList from './src/screens/TodoList/TodoList';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import {SafeAreaView, StatusBar, useColorScheme} from 'react-native';
+import {PersistGate} from 'redux-persist/es/integration/react';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
+import {Provider} from 'react-redux';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
+import {persistor, store} from './src/store';
+import {Navigation} from './src/navigation/Navigation';
 
 const App = () => {
-  console.log('Flipper is available soon');
+  const isDarkMode = useColorScheme() === 'dark';
+
+  const backgroundStyle = {
+    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  };
 
   return (
-    <View>
-      <StatusBar />
-      <TodoList />
-    </View>
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        {/* <SafeAreaView style={backgroundStyle}> */}
+          <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+          <Navigation />
+        {/* </SafeAreaView> */}
+      </PersistGate>
+    </Provider>
   );
 };
 
