@@ -1,32 +1,31 @@
-import React, { useEffect, useState } from 'react';
-import { ScrollView, Text } from 'react-native';
-import { TodoItem } from './TodoList.types';
-import { TODOS_URL } from '../../utils/constants';
-import { styles } from './TodoList.styles';
+import React, {useEffect} from 'react';
+import {ScrollView} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 
-const TodoList = () => {
-  const [todos, setTodos] = useState<TodoItem[]>([])
-  console.log(todos)
+import {TodoItem} from '../../components/TodoItem/TodoItem';
+import {changeTodo, getTodos} from '../../store/actions';
+import {selectTodos} from '../../store/selectors';
+import {styles} from './TodoList.styles';
+
+export const TodoList = () => {
+  const todos = useSelector(selectTodos);
+  const dispatch = useDispatch();
+
+  const handlePressTodo = (id: number) => {
+    const updatedTodo = {...todos[id], completed: !todos[id].completed};
+    dispatch(changeTodo(updatedTodo));
+  };
 
   useEffect(() => {
-    fetch(TODOS_URL)
-    .then(res => res.json())
-    .then(result => {
-      console.log(result)
-      setTodos(result.slice(0, 20))
-    })
-    .catch(err => console.warn(err))
-  }, [])
+    // @ts-ignore
+    dispatch(getTodos());
+  }, [dispatch]);
 
   return (
     <ScrollView style={styles.root}>
-      {todos.map((todo, i) => (
-        <Text key={todo.id} style={styles.todoText}>
-          {i+1}: {todo.title}
-        </Text>
+      {Object.values(todos).map((el, i) => (
+        <TodoItem todo={el} i={i} onComplete={handlePressTodo} />
       ))}
     </ScrollView>
   );
 };
-
-export default TodoList;

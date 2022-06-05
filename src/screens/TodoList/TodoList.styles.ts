@@ -4,10 +4,7 @@ export const styles = StyleSheet.create({
   root: {
     height: '100%',
     backgroundColor: 'white',
-    padding: 25
+    padding: 25,
+    margin: 15,
   },
-  todoText: {
-    marginVertical: 10,
-    fontSize: 17
-  }
 })
