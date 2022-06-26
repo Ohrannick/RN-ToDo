@@ -1,3 +1,4 @@
+import { TodoListNavigationProp } from '../../navigation/Navigation.types';
 
 export type Todo = {
   completed: boolean;
@@ -5,3 +6,7 @@ export type Todo = {
   title: string;
   userId?: number;
 };
+
+export type TodoListProp = {
+  navigation: TodoListNavigationProp;
+}

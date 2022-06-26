@@ -7,9 +7,9 @@ import {TodoItem} from '../../components/TodoItem/TodoItem';
 import {changeTodo, deleteTodo, getTodos} from '../../store/actions';
 import {selectTodos} from '../../store/selectors';
 import {styles} from './TodoList.styles';
-import { Todo } from './TodoList.types';
+import { Todo, TodoListProp } from './TodoList.types';
 
-export const TodoList = () => {
+export const TodoList = ({navigation}: TodoListProp) => {
   const todos = useSelector(selectTodos);
   const dispatch = useDispatch();
 
@@ -37,13 +37,19 @@ export const TodoList = () => {
     dispatch(getTodos());
   }, [dispatch]);
 
-const renderTodo = ({item, index}: ListRenderItemInfo<Todo>) => (
-  <TodoItem todo={item} i={index} 
-    onComplete={handlePressTodo}
-    onDelete={handleDeleteTodo}
-    key={item.id}
-  /> 
-)
+  const getTodos = (id: number) => {
+    console.log(id)
+    navigation.navigate('TodoDetails', {todoId: id});
+  }
+
+  const renderTodo = ({item, index}: ListRenderItemInfo<Todo>) => (
+    <TodoItem todo={item} i={index} 
+      onComplete={handlePressTodo}
+      onDelete={handleDeleteTodo}
+      onPress={getTodos}
+      key={item.id}
+    /> 
+  )
 
   const sections = useMemo(() => {
     return Object.values(todos).reduce<{completed: Todo[]; notCompl: Todo[]}>(
