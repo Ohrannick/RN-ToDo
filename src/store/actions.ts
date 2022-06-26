@@ -7,6 +7,7 @@ export const GET_TODOS_REQUEST = 'TODOS::GET_TODOS_REQUEST';
 export const GET_TODOS_SUCCESS = 'TODOS::GET_TODOS_SUCCESS';
 export const GET_TODOS_FAILURE = 'TODOS::GET_TODOS_FAILURE';
 export const CHANGE_TODO = 'TODOS::CHANGE_TODO';
+export const DELETE_TODO = 'TODOS::DELETE_TODO';
 
 export const getTodosRequest = () => ({
   type: GET_TODOS_REQUEST,
@@ -42,3 +43,8 @@ export const changeTodo = (newTodo: Todo) => ({
   type: CHANGE_TODO,
   payload: newTodo,
 });
+
+export const deleteTodo = (id: number) => ({
+  type: DELETE_TODO,
+  payload: id,
+})
