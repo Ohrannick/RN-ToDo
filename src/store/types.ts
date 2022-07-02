@@ -30,11 +30,11 @@ export type ChangeTodoAction = {
 export type DeleteTodoAction = {
   type: string;
   payload: number;
-}
+};
 
 export type Action =
   | GetTodosRequestAction
   | GetTodosSuccessAction
   | GetTodosFailureAction
   | ChangeTodoAction
-  | DeleteTodoAction
+  | DeleteTodoAction;

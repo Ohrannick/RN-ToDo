@@ -1,15 +1,15 @@
 import React, {useEffect, useMemo} from 'react';
-import {FlatList, ListRenderItemInfo, SectionList, Text} from 'react-native';
+import {ListRenderItemInfo, SectionList, Text} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import TextField from '../../components/TextField/TextField';
+import {TextField} from '../../components/TextField/TextField';
 
 import {TodoItem} from '../../components/TodoItem/TodoItem';
 import {changeTodo, deleteTodo, getTodos} from '../../store/actions';
 import {selectTodos} from '../../store/selectors';
 import {styles} from './TodoList.styles';
-import { Todo } from './TodoList.types';
+import {Todo, TodoListProps} from './TodoList.types';
 
-export const TodoList = () => {
+export const TodoList = ({navigation}: TodoListProps) => {
   const todos = useSelector(selectTodos);
   const dispatch = useDispatch();
 
@@ -22,28 +22,36 @@ export const TodoList = () => {
     const newTodo = {
       id: Date.now(),
       completed: false,
-      title: text
-    }
+      title: text,
+      imgs: [],
+    };
 
     dispatch(changeTodo(newTodo));
-  }
+  };
 
   const handleDeleteTodo = (id: number) => {
-    dispatch(deleteTodo(id))
-  }
+    dispatch(deleteTodo(id));
+  };
+
+  const toDetails = (id: number) => {
+    navigation.navigate('TodoDetails', {todoId: id});
+  };
 
   useEffect(() => {
     // @ts-ignore
     dispatch(getTodos());
   }, [dispatch]);
 
-const renderTodo = ({item, index}: ListRenderItemInfo<Todo>) => (
-  <TodoItem todo={item} i={index} 
-    onComplete={handlePressTodo}
-    onDelete={handleDeleteTodo}
-    key={item.id}
-  /> 
-)
+  const renderTodo = ({item, index}: ListRenderItemInfo<Todo>) => (
+    <TodoItem
+      todo={item}
+      i={index}
+      onPress={toDetails}
+      onComplete={handlePressTodo}
+      onDelete={handleDeleteTodo}
+      key={item.id}
+    />
+  );
 
   const sections = useMemo(() => {
     return Object.values(todos).reduce<{completed: Todo[]; notCompl: Todo[]}>(
@@ -60,18 +68,16 @@ const renderTodo = ({item, index}: ListRenderItemInfo<Todo>) => (
   }, [todos]);
 
   return (
-    <>
-      <SectionList 
-        ListHeaderComponent={() => <TextField onSubmit={handleAddTodo}/>}
-        ListEmptyComponent={() => <Text>Список пуст</Text>}
-        style={styles.root}
-        sections={[
-          {title: 'Completed', data: sections.completed},
-          {title: 'Not Completed', data: sections.notCompl},
-        ]}
-        renderSectionHeader={({section}) => <Text>{section.title}</Text>}
-        renderItem={renderTodo} 
-      />
-    </>
-  )
+    <SectionList
+      contentContainerStyle={styles.container}
+      style={styles.root}
+      ListHeaderComponent={() => <TextField onSubmit={handleAddTodo} />}
+      sections={[
+        {title: 'Completed', data: sections.completed},
+        {title: 'Not Completed', data: sections.notCompl},
+      ]}
+      renderSectionHeader={({section}) => <Text>{section.title}</Text>}
+      renderItem={renderTodo}
+    />
+  );
 };
