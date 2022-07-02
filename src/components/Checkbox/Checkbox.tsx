@@ -1,4 +1,4 @@
-import React, {useRef } from 'react';
+import React, { useRef } from 'react';
 import {Animated, TouchableOpacity} from 'react-native';
 import {styles} from './Checkbox.styles';
 import {CheckboxProps} from './Checkbox.types';

@@ -1,5 +1,9 @@
-import { TodoDetailsRouteProp } from '../../navigation/Navigation.types'
+import {
+  TodoDetailsNavigationProp,
+  TodoDetailsRouteProp,
+} from '../../navigation/Navigation.types';
 
 export type TodoDetailsProps = {
-  route: TodoDetailsRouteProp
-}
+  route: TodoDetailsRouteProp;
+  navigation: TodoDetailsNavigationProp;
+};
