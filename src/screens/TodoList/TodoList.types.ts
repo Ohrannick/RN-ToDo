@@ -8,6 +8,7 @@ export type Todo = {
   title: string;
   userId?: number;
   imgs: Asset[];
+  notificationIsOn?: boolean;
 };
 
 export type TodoListProps = {
